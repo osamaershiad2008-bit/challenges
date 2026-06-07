@@ -3,743 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحدي الـ 16 يوم | أسامة ⚡ عمار</title>
-    
-    <!-- Tailwind CSS -->
+    <title>تحدي الاختبارات | أسامة ⚔️ عمار</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Tailwind Config for Custom Colors and Fonts -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Cairo', 'sans-serif'],
-                    },
-                    colors: {
-                        dark: '#0f172a',
-                        darker: '#020617',
-                        primary: '#3b82f6', // أزرق لأسامة
-                        secondary: '#10b981', // أخضر لعمار
-                        gold: '#fbbf24'
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Custom Styles for Scrollbars and Glassmorphism -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap');
+        
         body {
-            background-color: #020617;
-            background-image: radial-gradient(circle at 50% -20%, #1e293b, #020617 80%);
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
             color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.2) 0, transparent 50%);
+            background-attachment: fixed;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155; 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569; 
-        }
-
-        /* Glass Cards */
-        .glass-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
-        /* Checkbox Styling */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
         .task-checkbox {
             appearance: none;
-            width: 1.5rem;
-            height: 1.5rem;
-            border: 2px solid #475569;
-            border-radius: 0.375rem;
-            outline: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.5em;
+            height: 1.5em;
+            border: 2px solid #3b82f6;
+            border-radius: 0.3em;
+            display: grid;
+            place-content: center;
             cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease-in-out;
-            background-color: rgba(15, 23, 42, 0.5);
+            transition: 0.2s all ease-in-out;
+        }
+        .task-checkbox::before {
+            content: "";
+            width: 0.8em;
+            height: 0.8em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            background-color: transform-origin;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        .task-checkbox:checked { background-color: #3b82f6; }
+        .task-checkbox:checked::before { transform: scale(1); }
+
+        .line-through-custom {
+            text-decoration: line-through;
+            color: #94a3b8;
+            transition: 0.3s all ease;
         }
 
-        .task-checkbox:checked {
-            background-color: #3b82f6;
-            border-color: #3b82f6;
-            transform: scale(1.1);
-        }
+        .tab-active { border-bottom: 4px solid #3b82f6; color: #60a5fa; }
+        .tab-inactive { border-bottom: 4px solid transparent; color: #94a3b8; }
+        .tab-inactive:hover { color: #cbd5e1; }
         
-        .tab-ammar .task-checkbox:checked {
-            background-color: #10b981;
-            border-color: #10b981;
-        }
+        .crown-icon { color: #fbbf24; filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.6)); }
 
-        .task-checkbox:checked::after {
-            content: '\f00c';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            color: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.875rem;
+        .loader {
+            border: 4px solid rgba(255,255,255,0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
         }
-
-        .task-checkbox:disabled {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        /* Toast Animation */
-        .toast-enter {
-            animation: slideInBottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        .toast-leave {
-            animation: slideOutBottom 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
-        }
-
-        @keyframes slideInBottom {
-            0% { transform: translateY(100px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes slideOutBottom {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(100px); opacity: 0; }
-        }
-
-        /* Accordion transition */
-        .accordion-content {
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-        }
-        .accordion-content.expanded {
-            max-height: 1000px; /* Arbitrary large number */
-            opacity: 1;
-            margin-top: 1rem;
-        }
-        
-        .crown-glow {
-            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="antialiased selection:bg-blue-500 selection:text-white pb-20">
+<body class="pb-20">
 
-    <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-darker z-50 flex flex-col items-center justify-center transition-opacity duration-500">
-        <i class="fas fa-circle-notch fa-spin text-5xl text-blue-500 mb-4"></i>
-        <h2 class="text-xl font-bold animate-pulse">جاري تجهيز ساحة المعركة...</h2>
-    </div>
-
-    <!-- Identity Modal -->
-    <div id="identity-modal" class="fixed inset-0 bg-black/80 z-40 hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="glass-card p-8 max-w-md w-full text-center border-t-4 border-t-gold relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <!-- شاشة تسجيل الدخول -->
+    <div id="login-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0f172a] px-4">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md text-center">
+            <h1 class="text-3xl font-bold mb-2 text-blue-400">تحدي الـ 16 يوم ⚔️</h1>
+            <p class="text-gray-400 mb-8">اختر هويتك لتبدأ المنافسة</p>
             
-            <i class="fas fa-swords text-4xl text-gold mb-4 crown-glow"></i>
-            <h2 class="text-3xl font-bold mb-2">تحديد الهوية</h2>
-            <p class="text-gray-400 mb-8">من أنت أيها المحارب المستعد لـ 16 يوم من الجلد؟</p>
-            
-            <div class="space-y-4">
-                <button onclick="selectIdentity('osama')" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-blue-900/50 flex items-center justify-between">
-                    <span class="text-xl">أنا أسامة 🦅</span>
-                    <i class="fas fa-arrow-left"></i>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="loginAs('osama')" class="bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold transition flex flex-col items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-user-ninja text-3xl"></i>
+                    <span>أنا أسامة</span>
                 </button>
-                <button onclick="selectIdentity('ammar')" class="w-full bg-gradient-to-r from-green-600 to-green-800 hover:from-green-500 hover:to-green-700 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:scale-105 shadow-lg shadow-green-900/50 flex items-center justify-between">
-                    <span class="text-xl">أنا عمار 🐺</span>
-                    <i class="fas fa-arrow-left"></i>
+                <button onclick="loginAs('ammar')" class="bg-purple-600 hover:bg-purple-500 text-white p-4 rounded-xl font-bold transition flex flex-col items-center gap-2 shadow-lg">
+                    <i class="fa-solid fa-user-astronaut text-3xl"></i>
+                    <span>أنا عمار</span>
                 </button>
-            </div>
-            <div class="mt-6 text-sm text-gray-500">
-                ملاحظة: يمكنك إكمال مهامك فقط، ولكن يمكنك رؤية تقدم صديقك.
             </div>
         </div>
     </div>
 
-    <!-- Main App Container -->
-    <div id="app-container" class="max-w-4xl mx-auto p-4 hidden">
+    <!-- شاشة التحميل -->
+    <div id="loading-screen" class="fixed inset-0 z-[60] hidden items-center justify-center bg-[#0f172a]/90 backdrop-blur-sm">
+        <div class="flex flex-col items-center gap-4">
+            <div class="loader"></div>
+            <p class="text-blue-400 font-bold animate-pulse">جاري الاتصال بقاعدة البيانات...</p>
+        </div>
+    </div>
+
+    <!-- الواجهة الرئيسية -->
+    <div id="main-app" class="hidden max-w-4xl mx-auto px-4 pt-6">
         
-        <!-- Header -->
-        <header class="text-center py-8 relative">
-            <h1 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-l from-blue-400 via-purple-400 to-green-400 mb-2 drop-shadow-lg mt-8 md:mt-0">
-                تحدي الـ 16 يوم للقمة 🚀
-            </h1>
-            <p class="text-gray-400 mb-6 font-medium" id="header-quote">"النجاح ليس صدفة، بل هو عمل شاق ومثابرة"</p>
+        <!-- الهيدر ولوحة الشرف -->
+        <header class="glass-panel rounded-3xl p-6 mb-8 mt-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
             
-            <!-- Countdown -->
-            <div class="glass-card inline-flex items-center gap-4 px-6 py-3 border-b-2 border-b-red-500">
-                <i class="fas fa-hourglass-half text-red-400 animate-pulse-slow"></i>
-                <div class="text-right">
-                    <p class="text-xs text-gray-400 uppercase tracking-wider">الوقت المتبقي للاختبارات</p>
-                    <p class="text-xl font-bold text-white font-mono" id="countdown-display">16 يوم : 00 : 00 : 00</p>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <!-- العداد -->
+                <div class="text-center bg-white/5 py-3 px-6 rounded-2xl border border-white/10">
+                    <p class="text-sm text-gray-400 mb-1">باقي على الاختبارات</p>
+                    <div class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                        16 يوم
+                    </div>
+                </div>
+
+                <!-- المواجهة -->
+                <div class="flex-1 w-full max-w-md">
+                    <h2 class="text-center font-bold text-xl mb-4 text-gray-200">لوحة الشرف 🏆</h2>
+                    
+                    <!-- أسامة -->
+                    <div class="mb-3">
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-bold flex items-center gap-2">
+                                أسامة <i id="osama-crown" class="fa-solid fa-crown crown-icon hidden text-lg"></i>
+                            </span>
+                            <span id="osama-score" class="font-bold text-blue-400">0 مهام</span>
+                        </div>
+                        <div class="h-3 w-full bg-gray-700 rounded-full overflow-hidden">
+                            <div id="osama-progress" class="h-full bg-blue-500 transition-all duration-1000 w-0"></div>
+                        </div>
+                    </div>
+
+                    <!-- عمار -->
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-bold flex items-center gap-2">
+                                عمار <i id="ammar-crown" class="fa-solid fa-crown crown-icon hidden text-lg"></i>
+                            </span>
+                            <span id="ammar-score" class="font-bold text-purple-400">0 مهام</span>
+                        </div>
+                        <div class="h-3 w-full bg-gray-700 rounded-full overflow-hidden">
+                            <div id="ammar-progress" class="h-full bg-purple-500 transition-all duration-1000 w-0"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- VS Scoreboard -->
-        <section class="mb-10 relative">
-            <div class="glass-card p-6 md:p-8">
-                <h2 class="text-center text-xl font-bold mb-8 text-gray-300">
-                    <i class="fas fa-trophy text-gold mr-2"></i> لوحة الشرف
-                </h2>
-                
-                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                    <!-- Osama Stats -->
-                    <div class="flex-1 w-full relative">
-                        <div class="flex justify-between items-end mb-2">
-                            <div>
-                                <h3 class="text-2xl font-bold text-blue-400 flex items-center gap-2">
-                                    أسامة
-                                    <i id="crown-osama" class="fas fa-crown text-gold hidden crown-glow text-lg"></i>
-                                </h3>
-                                <p class="text-sm text-gray-400 mt-1"><span id="xp-osama">0</span> نقطة (XP)</p>
-                            </div>
-                            <span class="text-3xl font-black text-blue-500" id="pct-osama">0%</span>
-                        </div>
-                        <div class="h-4 w-full bg-dark rounded-full overflow-hidden border border-gray-700 relative">
-                            <div id="bar-osama" class="h-full bg-gradient-to-l from-blue-400 to-blue-600 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]" style="width: 0%"></div>
-                        </div>
-                    </div>
-
-                    <!-- VS Badge -->
-                    <div class="shrink-0 z-10 flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-darker border-4 border-gray-700 flex items-center justify-center font-black text-2xl text-red-500 shadow-xl shadow-red-900/20">
-                            VS
-                        </div>
-                    </div>
-
-                    <!-- Ammar Stats -->
-                    <div class="flex-1 w-full relative">
-                        <div class="flex justify-between items-end mb-2">
-                            <span class="text-3xl font-black text-green-500" id="pct-ammar">0%</span>
-                            <div class="text-left">
-                                <h3 class="text-2xl font-bold text-green-400 flex items-center justify-end gap-2">
-                                    <i id="crown-ammar" class="fas fa-crown text-gold hidden crown-glow text-lg"></i>
-                                    عمار
-                                </h3>
-                                <p class="text-sm text-gray-400 mt-1"><span id="xp-ammar">0</span> نقطة (XP)</p>
-                            </div>
-                        </div>
-                        <div class="h-4 w-full bg-dark rounded-full overflow-hidden border border-gray-700 relative flex justify-end">
-                            <div id="bar-ammar" class="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(16,185,129,0.5)]" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Tabs -->
-        <div class="flex gap-2 mb-6" id="tabs-container">
-            <button onclick="switchTab('osama')" id="tab-btn-osama" class="flex-1 py-4 px-2 rounded-t-xl font-bold text-lg transition-colors border-b-4 border-transparent text-gray-400 hover:bg-white/5">
-                <i class="fas fa-eagle mr-2"></i> جدول أسامة
+        <!-- التبويبات -->
+        <div class="flex border-b border-gray-700 mb-6">
+            <button onclick="switchTab('osama')" id="tab-osama" class="flex-1 py-4 text-center font-bold text-lg tab-active transition">
+                <i class="fa-solid fa-user-ninja mr-2"></i> جدول أسامة
             </button>
-            <button onclick="switchTab('ammar')" id="tab-btn-ammar" class="flex-1 py-4 px-2 rounded-t-xl font-bold text-lg transition-colors border-b-4 border-transparent text-gray-400 hover:bg-white/5">
-                <i class="fas fa-wolf-pack-battalion mr-2"></i> جدول عمار
+            <button onclick="switchTab('ammar')" id="tab-ammar" class="flex-1 py-4 text-center font-bold text-lg tab-inactive transition">
+                <i class="fa-solid fa-user-astronaut mr-2"></i> جدول عمار
             </button>
         </div>
 
-        <!-- Task Lists Container -->
-        <div id="tasks-container" class="glass-card p-4 md:p-6 mb-10 min-h-[500px]">
-            <!-- Content will be injected via JS -->
+        <!-- منطقة الأيام والمهام -->
+        <div id="days-container" class="space-y-4">
+            <!-- سيتم توليد الأيام هنا عبر الجافاسكربت -->
         </div>
 
     </div>
 
-    <!-- Toast Notification Container -->
+    <!-- إشعارات Toast -->
     <div id="toast-container" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 z-50 pointer-events-none"></div>
 
-    <!-- رسالة تحذير عند الرفع على جيت هاب بدون إعدادات -->
-    <div id="github-warning" class="hidden fixed top-0 left-0 w-full bg-red-600 text-white p-3 text-center font-bold z-[100] shadow-lg">
-        ⚠️ تنبيه: لكي تعمل المزامنة على GitHub، يجب إضافة إعدادات Firebase الخاصة بك في الكود! (راجع التعليقات)
-    </div>
-
+    <!-- استيراد Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // =========================================================
-        // 🚀 إعدادات النشر على GitHub Pages (قاعدة البيانات الخاصة بك) 🚀
-        // =========================================================
-        // عند رفع الموقع على جيت هاب، ستحتاج لقاعدة بيانات مجانية خاصة بك.
-        // قم بإنشاء مشروع في Firebase والصق الإعدادات هنا (بدون علامات //):
-        const GITHUB_FIREBASE_CONFIG = {
-            // apiKey: "YOUR_API_KEY_HERE",
-            // authDomain: "YOUR_PROJECT.firebaseapp.com",
-            // projectId: "YOUR_PROJECT_ID",
-            // storageBucket: "YOUR_PROJECT.appspot.com",
-            // messagingSenderId: "123456789",
-            // appId: "1:123456789:web:abcdef"
+        // إعدادات قاعدة البيانات الخاصة بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyCoGH7xgKWIyG639uct4rhAcNO7YCu9oag",
+            authDomain: "studychallenge-e6fc3.firebaseapp.com",
+            projectId: "studychallenge-e6fc3",
+            storageBucket: "studychallenge-e6fc3.firebasestorage.app",
+            messagingSenderId: "159628995917",
+            appId: "1:159628995917:web:f668bcd1375dbe6f5c5b04",
+            measurementId: "G-WPGZH4PG0E"
         };
 
-        // غرفة ثابتة تجمعك بعمار دائماً حتى لو دخلتم من رابط جيت هاب العادي
-        const FIXED_ROOM_ID = "osama_ammar_vip_challenge";
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : FIXED_ROOM_ID;
-        
-        // استخدام الإعدادات المحلية إن وجدت، أو استخدام إعدادات جيت هاب الخاصة بك
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : (Object.keys(GITHUB_FIREBASE_CONFIG).length > 0 ? GITHUB_FIREBASE_CONFIG : null);
-        
         let app, db, auth;
-        
-        if (!firebaseConfig) {
-            document.getElementById('github-warning').classList.remove('hidden');
-        } else {
-            try {
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                auth = getAuth(app);
-            } catch (e) {
-                console.error("Firebase init failed:", e);
-            }
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch (e) {
+            console.error("Firebase init error:", e);
+            alert("حدث خطأ في تهيئة قاعدة البيانات.");
         }
 
-        // ------------------
-        // State Management
-        // ------------------
-        const TOTAL_DAYS = 16;
-        
-        function generateEmptyState() {
-            const td = new Date();
-            td.setDate(td.getDate() + 16);
-            let state = { osama: {}, ammar: {}, targetDate: td.getTime() };
-            for(let i=1; i<=TOTAL_DAYS; i++) {
-                // مهمة افتراضية لليوم الأول لتوضيح الفكرة
-                state.osama[`day_${i}`] = i === 1 ? [{ id: crypto.randomUUID(), title: "تجهيز جدول المذاكرة", xp: 10, done: false }] : [];
-                state.ammar[`day_${i}`] = i === 1 ? [{ id: crypto.randomUUID(), title: "تجهيز جدول المذاكرة", xp: 10, done: false }] : [];
-            }
-            return state;
-        }
-
-        window.appState = generateEmptyState();
-        window.currentUserIdentity = null;
+        // حالة التطبيق
+        window.currentUser = null;
         window.currentTab = 'osama';
+        window.allTasks = []; 
+        const TOTAL_DAYS = 16;
+        const COLLECTION_NAME = "challenge_tasks";
 
-        async function initApp() {
-            if (!firebaseConfig) {
-                hideLoading();
-                return; // إيقاف التشغيل إذا لم يتم وضع إعدادات فايربيس على جيت هاب
-            }
+        // دوال مساعدة لـ UI
+        const showLoading = () => document.getElementById('loading-screen').classList.replace('hidden', 'flex');
+        const hideLoading = () => document.getElementById('loading-screen').classList.replace('flex', 'hidden');
+
+        // تسجيل الدخول
+        window.loginAs = async function(userType) {
+            window.currentUser = userType;
+            document.getElementById('login-screen').classList.add('hidden');
+            showLoading();
 
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                if(!auth.currentUser) return;
-
-                // الاتصال بقاعدة البيانات المشتركة للحصول على تحديثات حية
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'competition', 'state');
+                // تسجيل الدخول كمجهول للوصول لقاعدة البيانات الخاصة بك
+                await signInAnonymously(auth);
                 
-                onSnapshot(docRef, (docSnap) => {
-                    if (docSnap.exists()) {
-                        window.appState = docSnap.data();
-                        // تأمين العداد في حال كانت البيانات القديمة موجودة مسبقاً
-                        if(!window.appState.targetDate) {
-                            const td = new Date();
-                            td.setDate(td.getDate() + 16);
-                            window.appState.targetDate = td.getTime();
-                            setDoc(docRef, window.appState);
-                        }
-                    } else {
-                        setDoc(docRef, window.appState); // تهيئة البيانات لأول مرة
-                    }
-                    hideLoading();
-                    startCountdown();
-                    updateUI();
-                }, (error) => {
-                    console.error("Realtime update error:", error);
-                    showToast("حدث خطأ في جلب التحديثات", "error");
-                });
-
-            } catch(e) {
-                console.error("Auth error", e);
+                // بدء جلب المهام
+                startListeningToTasks();
+                
+                document.getElementById('main-app').classList.remove('hidden');
+                switchTab(userType); 
+                showToast(`مرحباً بك يا ${userType === 'osama' ? 'أسامة' : 'عمار'}! ⚔️`);
                 hideLoading();
-                startCountdown();
-                updateUI();
-            }
-        }
-
-        function hideLoading() {
-            const overlay = document.getElementById('loading-overlay');
-            if(overlay) overlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => {
-                if(!window.currentUserIdentity) {
-                    document.getElementById('identity-modal').classList.remove('hidden');
-                }
-            }, 500);
-        }
-
-        window.selectIdentity = function(identity) {
-            window.currentUserIdentity = identity;
-            document.getElementById('identity-modal').classList.add('hidden');
-            document.getElementById('app-container').classList.remove('hidden');
-            window.switchTab(identity);
-            showToast(`أهلاً بك يا ${identity === 'osama' ? 'أسامة 🦅' : 'عمار 🐺'}، التحديث التلقائي مفعل!`, "success");
-        }
-
-        window.switchTab = function(user) {
-            window.currentTab = user;
-            const isOsama = user === 'osama';
-            
-            const tabOsama = document.getElementById('tab-btn-osama');
-            const tabAmmar = document.getElementById('tab-btn-ammar');
-            const tasksContainer = document.getElementById('tasks-container');
-
-            if(isOsama) {
-                tabOsama.classList.add('border-blue-500', 'text-white', 'bg-blue-900/20');
-                tabOsama.classList.remove('border-transparent', 'text-gray-400');
-                tabAmmar.classList.remove('border-green-500', 'text-white', 'bg-green-900/20');
-                tabAmmar.classList.add('border-transparent', 'text-gray-400');
-                tasksContainer.className = "glass-card p-4 md:p-6 mb-10 min-h-[500px] border-t-2 border-t-blue-500 tab-osama";
-            } else {
-                tabAmmar.classList.add('border-green-500', 'text-white', 'bg-green-900/20');
-                tabAmmar.classList.remove('border-transparent', 'text-gray-400');
-                tabOsama.classList.remove('border-blue-500', 'text-white', 'bg-blue-900/20');
-                tabOsama.classList.add('border-transparent', 'text-gray-400');
-                tasksContainer.className = "glass-card p-4 md:p-6 mb-10 min-h-[500px] border-t-2 border-t-green-500 tab-ammar";
-            }
-            renderTasksList();
-        }
-
-        function renderTasksList() {
-            const container = document.getElementById('tasks-container');
-            const user = window.currentTab;
-            const isMyTab = window.currentUserIdentity === user;
-            const themeColor = user === 'osama' ? 'blue' : 'green';
-
-            // حفظ النصوص المكتوبة قبل تحديث الشاشة لتجنب اختفائها أثناء المزامنة
-            const inputValues = {};
-            document.querySelectorAll('input[type="text"]').forEach(input => {
-                if(input.id) inputValues[input.id] = input.value;
-            });
-            const activeInputId = document.activeElement ? document.activeElement.id : null;
-
-            let html = `
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold text-white">
-                        مهام ${user === 'osama' ? 'أسامة' : 'عمار'}
-                    </h3>
-                    ${!isMyTab ? `<span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm font-bold border border-red-500/50"><i class="fas fa-satellite-dish animate-pulse mr-1"></i> بث مباشر</span>` : ''}
-                </div>
-                <div class="space-y-4">
-            `;
-
-            // الاحتفاظ بحالة القوائم المفتوحة حالياً حتى لا تنغلق مع التحديث التلقائي
-            const expandedDays = new Set();
-            for(let i=1; i<=TOTAL_DAYS; i++) {
-                const contentDiv = document.getElementById(`content-day_${i}`);
-                if(contentDiv && contentDiv.classList.contains('expanded')) {
-                    expandedDays.add(`day_${i}`);
-                }
-            }
-            if(expandedDays.size === 0 && !window.initializedAccordions) {
-                expandedDays.add('day_1');
-                window.initializedAccordions = true;
-            }
-
-            for(let i=1; i<=TOTAL_DAYS; i++) {
-                const dayId = `day_${i}`;
-                const dayTasks = window.appState[user][dayId] || [];
-                const completedTasks = dayTasks.filter(t => t.done).length;
-                const isDayComplete = completedTasks === dayTasks.length && dayTasks.length > 0;
+            } catch (error) {
+                console.error("Auth error:", error);
+                hideLoading();
+                document.getElementById('login-screen').classList.remove('hidden');
                 
-                const isExpanded = expandedDays.has(dayId);
-                const expandClass = isExpanded ? 'expanded' : '';
-                const iconRotate = isExpanded ? 'transform: rotate(180deg)' : '';
+                if (error.code === 'auth/configuration-not-found') {
+                    alert("⚠️ عذراً! لم تقم بتفعيل 'تسجيل الدخول' (Authentication) في مشروعك على Firebase.\n\nيرجى الذهاب إلى موقع Firebase ثم Authentication -> Get Started -> وتفعيل 'Anonymous' لحل المشكلة.");
+                } else {
+                    alert("فشل الاتصال! يرجى التأكد من إعدادات منصة Firebase.");
+                }
+            }
+        };
 
-                html += `
-                    <div class="border border-gray-700 bg-darker rounded-xl overflow-hidden transition-all duration-300 ${isDayComplete ? `border-${themeColor}-500/50 bg-${themeColor}-900/10` : 'hover:border-gray-500'}">
-                        
-                        <div class="p-4 cursor-pointer flex items-center justify-between" onclick="toggleAccordion('${dayId}')">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold ${isDayComplete ? `bg-${themeColor}-500 text-white` : 'bg-gray-800 text-gray-400'}">
-                                    ${isDayComplete ? '<i class="fas fa-check"></i>' : i}
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg ${isDayComplete ? `text-${themeColor}-400` : 'text-white'}">اليوم ${i}</h4>
-                                    <p class="text-xs text-gray-400">${completedTasks} / ${dayTasks.length} مهام منجزة</p>
-                                </div>
-                            </div>
-                            <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300" id="icon-${dayId}" style="${iconRotate}"></i>
+        // جلب البيانات لحظياً
+        function startListeningToTasks() {
+            const tasksRef = collection(db, COLLECTION_NAME);
+            const q = query(tasksRef, orderBy("createdAt", "asc"));
+
+            onSnapshot(q, (snapshot) => {
+                window.allTasks = [];
+                snapshot.forEach((doc) => {
+                    window.allTasks.push({ id: doc.id, ...doc.data() });
+                });
+                renderApp();
+                updateLeaderboard();
+            }, (error) => {
+                console.error("Firestore error:", error);
+                if (error.code === 'permission-denied') {
+                    alert("ممنوع الوصول للقاعدة! تأكد من تفعيل Firestore واختيار Start in Test Mode في حسابك.");
+                }
+            });
+        }
+
+        // تبديل التبويبات
+        window.switchTab = function(tabName) {
+            window.currentTab = tabName;
+            
+            document.getElementById('tab-osama').className = tabName === 'osama' ? 'flex-1 py-4 text-center font-bold text-lg tab-active transition' : 'flex-1 py-4 text-center font-bold text-lg tab-inactive transition';
+            document.getElementById('tab-ammar').className = tabName === 'ammar' ? 'flex-1 py-4 text-center font-bold text-lg tab-active transition' : 'flex-1 py-4 text-center font-bold text-lg tab-inactive transition';
+            
+            renderApp();
+        };
+
+        // رسم واجهة الأيام والمهام
+        function renderApp() {
+            const container = document.getElementById('days-container');
+            container.innerHTML = '';
+
+            const isMyTab = window.currentUser === window.currentTab;
+
+            for (let day = 1; day <= TOTAL_DAYS; day++) {
+                const dayTasks = window.allTasks.filter(t => t.day === day && t.owner === window.currentTab);
+                const completedCount = dayTasks.filter(t => t.completed).length;
+                const totalCount = dayTasks.length;
+                
+                const isDayDone = totalCount > 0 && completedCount === totalCount;
+                const dayBg = isDayDone ? 'bg-green-900/20 border-green-500/30' : 'glass-panel';
+                const dayHeaderColor = isDayDone ? 'text-green-400' : 'text-blue-300';
+
+                let html = `
+                    <div class="${dayBg} rounded-2xl p-5 transition-all duration-300">
+                        <div class="flex justify-between items-center border-b border-white/10 pb-3 mb-4">
+                            <h3 class="font-bold text-lg ${dayHeaderColor}">اليوم ${day}</h3>
+                            <span class="text-sm bg-black/30 px-3 py-1 rounded-full text-gray-300">
+                                ${completedCount}/${totalCount} مهام
+                            </span>
                         </div>
-
-                        <div id="content-${dayId}" class="accordion-content bg-gray-800/50 px-4 pb-4 ${expandClass}">
-                            <div class="space-y-3 pt-2">
+                        
+                        <div class="space-y-3 mb-4">
                 `;
 
-                if(dayTasks.length === 0) {
-                    html += `<p class="text-gray-500 text-center text-sm py-4">لم يتم إضافة مهام بعد.</p>`;
+                if (dayTasks.length === 0) {
+                    html += `<p class="text-gray-500 text-center text-sm italic">لا توجد مهام مضافة بعد.</p>`;
+                } else {
+                    dayTasks.forEach(task => {
+                        const textClass = task.completed ? 'line-through-custom' : 'text-gray-100';
+                        
+                        html += `
+                            <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5 hover:border-white/10 transition group">
+                                <input type="checkbox" 
+                                    class="task-checkbox flex-shrink-0" 
+                                    ${task.completed ? 'checked' : ''} 
+                                    ${!isMyTab ? 'disabled' : `onchange="toggleTask('${task.id}', this.checked)"`}
+                                >
+                                <span class="flex-1 ${textClass}">${task.text}</span>
+                        `;
+
+                        if (isMyTab) {
+                            html += `
+                                <button onclick="deleteTask('${task.id}')" class="text-red-400 opacity-0 group-hover:opacity-100 transition hover:text-red-300">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            `;
+                        }
+
+                        html += `</div>`;
+                    });
                 }
 
-                dayTasks.forEach(task => {
-                    const isChecked = task.done ? 'checked' : '';
-                    const disabledStr = !isMyTab ? 'disabled' : '';
-                    
-                    html += `
-                        <label class="flex items-center gap-4 p-3 rounded-lg border border-gray-700 bg-dark hover:bg-gray-700/50 transition-colors ${!isMyTab ? '' : 'cursor-pointer'} group">
-                            <input type="checkbox" class="task-checkbox shrink-0" 
-                                ${isChecked} ${disabledStr} 
-                                onchange="handleTaskToggle('${user}', '${dayId}', '${task.id}', this.checked)">
-                            
-                            <div class="flex-1">
-                                <span class="text-sm md:text-base font-medium ${isChecked ? 'text-gray-500 line-through' : 'text-gray-200'} transition-all group-hover:text-white">
-                                    ${task.title}
-                                </span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2">
-                                <div class="shrink-0 text-xs font-bold bg-darker px-2 py-1 rounded border border-gray-600 text-gold shadow-inner">
-                                    +${task.xp} XP
-                                </div>
-                                ${isMyTab ? `<button type="button" onclick="deleteTask(event, '${user}', '${dayId}', '${task.id}')" class="text-red-500 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity p-2"><i class="fas fa-trash-alt"></i></button>` : ''}
-                            </div>
-                        </label>
-                    `;
-                });
+                html += `</div>`;
 
-                // نموذج إضافة مهمة جديدة لصاحب الجدول فقط
-                if(isMyTab) {
+                if (isMyTab) {
                     html += `
-                        <div class="mt-4 flex gap-2" onclick="event.stopPropagation()">
-                            <input type="text" id="new-task-${dayId}" placeholder="اكتب مهمة جديدة هنا..." 
-                                class="flex-1 bg-darker border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-${themeColor}-500 transition-colors"
-                                onkeypress="if(event.key === 'Enter') addNewTask('${dayId}')">
-                            <button onclick="addNewTask('${dayId}')" class="bg-${themeColor}-600 hover:bg-${themeColor}-500 text-white px-4 py-2 rounded-lg font-bold transition-colors flex items-center gap-2 shadow-lg">
-                                إضافة <i class="fas fa-plus"></i>
+                        <div class="flex gap-2 mt-4 pt-4 border-t border-white/5">
+                            <input type="text" id="input-day-${day}" placeholder="اكتب مهمة جديدة هنا..." 
+                                class="flex-1 bg-black/20 border border-white/10 rounded-xl px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition"
+                                onkeypress="if(event.key === 'Enter') addTask(${day})"
+                            >
+                            <button onclick="addTask(${day})" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl transition font-bold shadow-lg shadow-blue-500/20">
+                                <i class="fa-solid fa-plus"></i> إضافة
                             </button>
                         </div>
                     `;
                 }
 
-                html += `
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            html += `</div>`;
-            container.innerHTML = html;
-
-            // استرجاع النصوص والتركيز بعد تحديث الشاشة
-            Object.keys(inputValues).forEach(id => {
-                const input = document.getElementById(id);
-                if(input) input.value = inputValues[id];
-            });
-            if (activeInputId) {
-                const activeInput = document.getElementById(activeInputId);
-                if (activeInput) {
-                    activeInput.focus();
-                }
+                html += `</div>`;
+                container.innerHTML += html;
             }
         }
 
-        window.toggleAccordion = function(dayId) {
-            const content = document.getElementById(`content-${dayId}`);
-            const icon = document.getElementById(`icon-${dayId}`);
-            
-            if(content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                content.classList.add('expanded');
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
+        // إضافة مهمة
+        window.addTask = async function(day) {
+            const input = document.getElementById(`input-day-${day}`);
+            const text = input.value.trim();
+            if (!text) return;
 
-        async function saveStateToFirebase() {
-            if(!auth.currentUser) return;
-            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'competition', 'state');
+            const taskId = doc(collection(db, COLLECTION_NAME)).id;
+            input.value = ''; 
+
             try {
-                await setDoc(docRef, window.appState);
-            } catch(e) {
-                console.error("Sync error:", e);
-                showToast("خطأ في حفظ البيانات، تأكد من اتصالك", "error");
+                await setDoc(doc(db, COLLECTION_NAME, taskId), {
+                    day: day,
+                    text: text,
+                    completed: false,
+                    owner: window.currentUser,
+                    createdAt: Date.now()
+                });
+                showToast("تمت الإضافة بنجاح");
+            } catch (e) {
+                console.error("Error adding task:", e);
+                alert("حدث خطأ أثناء حفظ المهمة!");
             }
-        }
+        };
 
-        window.addNewTask = async function(dayId) {
-            const user = window.currentUserIdentity;
-            if(!user || window.currentTab !== user) return;
-
-            const input = document.getElementById(`new-task-${dayId}`);
-            const title = input.value.trim();
-            
-            if(!title) {
-                showToast("لا يمكن إضافة مهمة فارغة!", "error");
-                return;
+        // تحديث حالة المهمة
+        window.toggleTask = async function(taskId, isCompleted) {
+            try {
+                await setDoc(doc(db, COLLECTION_NAME, taskId), {
+                    completed: isCompleted
+                }, { merge: true }); 
+                
+                if(isCompleted) showToast("عاش بطل! استمر 🔥");
+            } catch (e) {
+                console.error("Error toggling task:", e);
             }
+        };
 
-            const newTask = {
-                id: crypto.randomUUID(),
-                title: title,
-                xp: Math.floor(Math.random() * 11) + 10, // من 10 إلى 20 نقطة عشوائياً
-                done: false
-            };
-
-            if(!window.appState[user][dayId]) window.appState[user][dayId] = [];
-            window.appState[user][dayId].push(newTask);
-            
-            input.value = ''; // تفريغ حقل النص
-            
-            updateUI(); // تحديث فوري للشاشة
-            await saveStateToFirebase(); // حفظ للسيرفر لكي يراه صديقك
-        }
-
-        window.handleTaskToggle = async function(user, dayId, taskId, isDone) {
-            if(user !== window.currentUserIdentity) return;
-
-            const task = window.appState[user][dayId].find(t => t.id === taskId);
-            if(task) {
-                task.done = isDone;
-                updateUI();
-                await saveStateToFirebase();
-                if(isDone) showToast("عاش وحش! 👏", "success");
+        // حذف مهمة
+        window.deleteTask = async function(taskId) {
+            if(confirm("متأكد من حذف هذه المهمة؟")) {
+                try {
+                    await deleteDoc(doc(db, COLLECTION_NAME, taskId));
+                    showToast("تم الحذف");
+                } catch (e) {
+                    console.error("Error deleting task:", e);
+                }
             }
-        }
+        };
 
-        window.deleteTask = async function(event, user, dayId, taskId) {
-            event.stopPropagation(); // منع إغلاق القائمة
-            event.preventDefault();
-            
-            if(user !== window.currentUserIdentity) return;
+        // تحديث النقاط ولوحة الشرف
+        function updateLeaderboard() {
+            let osamaCompleted = 0, ammarCompleted = 0;
+            let osamaTotal = 0, ammarTotal = 0;
 
-            window.appState[user][dayId] = window.appState[user][dayId].filter(t => t.id !== taskId);
-            
-            updateUI();
-            await saveStateToFirebase();
-            showToast("تم حذف المهمة", "success");
-        }
-
-        function updateUI() {
-            updateScoreboard();
-            renderTasksList();
-        }
-
-        function updateScoreboard() {
-            let stats = { osama: { xp: 0, completed: 0, total: 0 }, ammar: { xp: 0, completed: 0, total: 0 } };
-
-            ['osama', 'ammar'].forEach(user => {
-                for(let i=1; i<=TOTAL_DAYS; i++) {
-                    const tasks = window.appState[user][`day_${i}`] || [];
-                    tasks.forEach(task => {
-                        stats[user].total++;
-                        if(task.done) {
-                            stats[user].xp += task.xp;
-                            stats[user].completed++;
-                        }
-                    });
+            window.allTasks.forEach(task => {
+                if (task.owner === 'osama') {
+                    osamaTotal++;
+                    if (task.completed) osamaCompleted++;
+                } else if (task.owner === 'ammar') {
+                    ammarTotal++;
+                    if (task.completed) ammarCompleted++;
                 }
             });
 
-            const pctOsama = stats.osama.total ? Math.round((stats.osama.completed / stats.osama.total) * 100) : 0;
-            const pctAmmar = stats.ammar.total ? Math.round((stats.ammar.completed / stats.ammar.total) * 100) : 0;
+            const osamaPct = osamaTotal > 0 ? Math.round((osamaCompleted / osamaTotal) * 100) : 0;
+            const ammarPct = ammarTotal > 0 ? Math.round((ammarCompleted / ammarTotal) * 100) : 0;
 
-            document.getElementById('xp-osama').innerText = stats.osama.xp;
-            document.getElementById('xp-ammar').innerText = stats.ammar.xp;
-            document.getElementById('pct-osama').innerText = `${pctOsama}%`;
-            document.getElementById('pct-ammar').innerText = `${pctAmmar}%`;
-            document.getElementById('bar-osama').style.width = `${pctOsama}%`;
-            document.getElementById('bar-ammar').style.width = `${pctAmmar}%`;
+            document.getElementById('osama-score').innerText = `${osamaCompleted} من ${osamaTotal}`;
+            document.getElementById('ammar-score').innerText = `${ammarCompleted} من ${ammarTotal}`;
+            
+            document.getElementById('osama-progress').style.width = `${osamaPct}%`;
+            document.getElementById('ammar-progress').style.width = `${ammarPct}%`;
 
-            const crownOsama = document.getElementById('crown-osama');
-            const crownAmmar = document.getElementById('crown-ammar');
-            crownOsama.classList.add('hidden');
-            crownAmmar.classList.add('hidden');
+            document.getElementById('osama-crown').classList.add('hidden');
+            document.getElementById('ammar-crown').classList.add('hidden');
 
-            if(stats.osama.xp > stats.ammar.xp && stats.osama.xp > 0) crownOsama.classList.remove('hidden');
-            else if (stats.ammar.xp > stats.osama.xp && stats.ammar.xp > 0) crownAmmar.classList.remove('hidden');
+            if (osamaCompleted > ammarCompleted && osamaCompleted > 0) {
+                document.getElementById('osama-crown').classList.remove('hidden');
+            } else if (ammarCompleted > osamaCompleted && ammarCompleted > 0) {
+                document.getElementById('ammar-crown').classList.remove('hidden');
+            }
         }
 
-        function showToast(message, type = 'success') {
+        // إشعارات منبثقة
+        function showToast(message) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            
-            const colorClass = type === 'success' ? 'bg-green-600' : 'bg-red-600';
-            const iconClass = type === 'success' ? 'fa-check-circle' : 'fa-times-circle';
-
-            toast.className = `${colorClass} text-white px-6 py-3 rounded-full shadow-lg shadow-black/50 font-bold flex items-center gap-2 toast-enter`;
-            toast.innerHTML = `<i class="fas ${iconClass}"></i> ${message}`;
+            toast.className = 'glass-panel text-white px-6 py-3 rounded-full font-bold shadow-2xl transition-all duration-300 transform translate-y-10 opacity-0';
+            toast.innerText = message;
             
             container.appendChild(toast);
-
+            
+            setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
             setTimeout(() => {
-                toast.classList.replace('toast-enter', 'toast-leave');
-                setTimeout(() => toast.remove(), 500);
+                toast.classList.add('opacity-0', '-translate-y-10');
+                setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-
-        let countdownInterval;
-
-        function startCountdown() {
-            if (countdownInterval) clearInterval(countdownInterval);
-            
-            const targetTimestamp = window.appState.targetDate;
-            if (!targetTimestamp) return;
-
-            const display = document.getElementById('countdown-display');
-
-            countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = targetTimestamp - now;
-
-                if (distance < 0) {
-                    display.innerHTML = "انتهى الوقت! حان وقت الاختبارات 💥";
-                    display.classList.add('text-red-500');
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                display.innerHTML = `${days} يوم : ${hours.toString().padStart(2, '0')} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        const quotes = [
-            "النجاح ليس صدفة، بل هو عمل شاق ومثابرة",
-            "الألم الذي تشعر به اليوم، سيكون القوة التي تشعر بها غداً",
-            "لا تستسلم، البدايات دائماً هي الأصعب",
-            "من نام عن طلب العلا، استيقظ على فوت المنى",
-            "الطريق إلى القمة مزدحم، لكن القمة نفسها تتسع للجميع"
-        ];
-        document.getElementById('header-quote').innerText = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
-
-        window.addEventListener('DOMContentLoaded', initApp);
 
     </script>
 </body>
