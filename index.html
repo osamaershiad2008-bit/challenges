@@ -276,21 +276,52 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 z-50 pointer-events-none"></div>
 
+    <!-- رسالة تحذير عند الرفع على جيت هاب بدون إعدادات -->
+    <div id="github-warning" class="hidden fixed top-0 left-0 w-full bg-red-600 text-white p-3 text-center font-bold z-[100] shadow-lg">
+        ⚠️ تنبيه: لكي تعمل المزامنة على GitHub، يجب إضافة إعدادات Firebase الخاصة بك في الكود! (راجع التعليقات)
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'study-challenge-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        // =========================================================
+        // 🚀 إعدادات النشر على GitHub Pages (قاعدة البيانات الخاصة بك) 🚀
+        // =========================================================
+        // عند رفع الموقع على جيت هاب، ستحتاج لقاعدة بيانات مجانية خاصة بك.
+        // قم بإنشاء مشروع في Firebase والصق الإعدادات هنا (بدون علامات //):
+        const GITHUB_FIREBASE_CONFIG = {
+            // apiKey: "YOUR_API_KEY_HERE",
+            // authDomain: "YOUR_PROJECT.firebaseapp.com",
+            // projectId: "YOUR_PROJECT_ID",
+            // storageBucket: "YOUR_PROJECT.appspot.com",
+            // messagingSenderId: "123456789",
+            // appId: "1:123456789:web:abcdef"
+        };
+
+        // غرفة ثابتة تجمعك بعمار دائماً حتى لو دخلتم من رابط جيت هاب العادي
+        const FIXED_ROOM_ID = "osama_ammar_vip_challenge";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : FIXED_ROOM_ID;
+        
+        // استخدام الإعدادات المحلية إن وجدت، أو استخدام إعدادات جيت هاب الخاصة بك
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : (Object.keys(GITHUB_FIREBASE_CONFIG).length > 0 ? GITHUB_FIREBASE_CONFIG : null);
         
         let app, db, auth;
-        try {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-        } catch (e) {
-            console.error("Firebase init failed:", e);
+        
+        if (!firebaseConfig) {
+            document.getElementById('github-warning').classList.remove('hidden');
+        } else {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+            } catch (e) {
+                console.error("Firebase init failed:", e);
+            }
         }
 
         // ------------------
@@ -299,7 +330,9 @@
         const TOTAL_DAYS = 16;
         
         function generateEmptyState() {
-            let state = { osama: {}, ammar: {} };
+            const td = new Date();
+            td.setDate(td.getDate() + 16);
+            let state = { osama: {}, ammar: {}, targetDate: td.getTime() };
             for(let i=1; i<=TOTAL_DAYS; i++) {
                 // مهمة افتراضية لليوم الأول لتوضيح الفكرة
                 state.osama[`day_${i}`] = i === 1 ? [{ id: crypto.randomUUID(), title: "تجهيز جدول المذاكرة", xp: 10, done: false }] : [];
@@ -313,8 +346,13 @@
         window.currentTab = 'osama';
 
         async function initApp() {
+            if (!firebaseConfig) {
+                hideLoading();
+                return; // إيقاف التشغيل إذا لم يتم وضع إعدادات فايربيس على جيت هاب
+            }
+
             try {
-                if (typeof __initial_auth_token !== 'undefined') {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else {
                     await signInAnonymously(auth);
@@ -328,6 +366,13 @@
                 onSnapshot(docRef, (docSnap) => {
                     if (docSnap.exists()) {
                         window.appState = docSnap.data();
+                        // تأمين العداد في حال كانت البيانات القديمة موجودة مسبقاً
+                        if(!window.appState.targetDate) {
+                            const td = new Date();
+                            td.setDate(td.getDate() + 16);
+                            window.appState.targetDate = td.getTime();
+                            setDoc(docRef, window.appState);
+                        }
                     } else {
                         setDoc(docRef, window.appState); // تهيئة البيانات لأول مرة
                     }
@@ -394,6 +439,13 @@
             const user = window.currentTab;
             const isMyTab = window.currentUserIdentity === user;
             const themeColor = user === 'osama' ? 'blue' : 'green';
+
+            // حفظ النصوص المكتوبة قبل تحديث الشاشة لتجنب اختفائها أثناء المزامنة
+            const inputValues = {};
+            document.querySelectorAll('input[type="text"]').forEach(input => {
+                if(input.id) inputValues[input.id] = input.value;
+            });
+            const activeInputId = document.activeElement ? document.activeElement.id : null;
 
             let html = `
                 <div class="flex justify-between items-center mb-6">
@@ -500,6 +552,18 @@
             }
             html += `</div>`;
             container.innerHTML = html;
+
+            // استرجاع النصوص والتركيز بعد تحديث الشاشة
+            Object.keys(inputValues).forEach(id => {
+                const input = document.getElementById(id);
+                if(input) input.value = inputValues[id];
+            });
+            if (activeInputId) {
+                const activeInput = document.getElementById(activeInputId);
+                if (activeInput) {
+                    activeInput.focus();
+                }
+            }
         }
 
         window.toggleAccordion = function(dayId) {
@@ -637,23 +701,19 @@
             }, 3000);
         }
 
+        let countdownInterval;
+
         function startCountdown() {
-            let targetDateStr = localStorage.getItem('challenge_target_date');
-            let targetDate;
+            if (countdownInterval) clearInterval(countdownInterval);
             
-            if(!targetDateStr) {
-                targetDate = new Date();
-                targetDate.setDate(targetDate.getDate() + 16);
-                localStorage.setItem('challenge_target_date', targetDate.toISOString());
-            } else {
-                targetDate = new Date(targetDateStr);
-            }
+            const targetTimestamp = window.appState.targetDate;
+            if (!targetTimestamp) return;
 
             const display = document.getElementById('countdown-display');
 
-            setInterval(() => {
+            countdownInterval = setInterval(() => {
                 const now = new Date().getTime();
-                const distance = targetDate.getTime() - now;
+                const distance = targetTimestamp - now;
 
                 if (distance < 0) {
                     display.innerHTML = "انتهى الوقت! حان وقت الاختبارات 💥";
